@@ -1,13 +1,14 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
-import credentials from "nf-gen-a7a6b558751b.json";
 import { asyncRequestHandler } from "./common.helpers";
 import { StatusCodes } from "http-status-codes";
 import { Network } from "@type/site.types";
 import { ICreateSiteBodyRequest } from "@interfaces/zodSchema.interfaces";
 import { createSite, isValidSite } from "@services/site.services";
 import logger from "@/src/log/logger";
+import { env_var } from "@/src/config/env.config";
 
+const credentials = JSON.parse(env_var.GOOGLE_SERVICE_ACCOUNT as string);
 const serviceAccountAuth = new JWT({
   email: credentials.client_email,
   key: credentials.private_key,
