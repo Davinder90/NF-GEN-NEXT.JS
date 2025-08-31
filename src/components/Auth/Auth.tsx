@@ -65,12 +65,12 @@ export default function AuthForm() {
       </h1>
       <div
         className={clsx(
-          "w-full max-w-md h-[75vh] p-10 rounded-xl shadow-2xl bg-white transition-all duration-500",
+          "w-full max-w-md px-10 py-8 rounded-xl shadow-2xl bg-white transition-all duration-500",
           "dark:bg-[#1a1a1a]", // Lighter black for dark mode
           { "animate-shake": shake }
         )}
       >
-        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-6">
+        <h1 className="text-3xl font-extrabold text-center text-gray-800 dark:text-white mb-5">
           {isSignIn === true ? "Sign In" : "Sign Up"}
         </h1>
 
