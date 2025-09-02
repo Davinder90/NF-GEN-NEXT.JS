@@ -33,7 +33,8 @@
       "@middleware/*": ["./src/lib/middleware/*"],
       "@type/*": ["./src/lib/type/*"],
       "@assets/*": ["./src/assets/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@redux-store/*": ["./src/redux-store/*"]
     }
   },
   "include": [

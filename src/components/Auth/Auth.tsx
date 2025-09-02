@@ -6,9 +6,13 @@ import { handleGetUserAuthToken } from "@/src/requests/user.requests";
 import toast from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { CLIENT_ROUTES } from "@/src/lib/utils/common-constants";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/src/redux-store/store";
+import { login } from "@/src/redux-store/userSlice";
 
 export default function AuthForm() {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const state = usePathname();
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
@@ -50,6 +54,13 @@ export default function AuthForm() {
     setDisable(false);
     if (data?.success) {
       setLocalStorage("userInfo", { ...data?.result, email });
+      dispatch(
+        login({
+          name: data?.result?.usrname,
+          email: email,
+          isAllowed: data?.result?.isAllowed,
+        })
+      );
       toast.success(data.message);
       return router.push("/");
     }

@@ -1,15 +1,19 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { CLIENT_ROUTES } from "@/src/lib/utils/common-constants";
 import {
   getLocalStorage,
   removeLocalStorage,
 } from "@/src/lib/helpers/localStorage";
+import { handleGetUserAllowance } from "@/src/requests/user.requests";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@redux-store/store";
+import { logout, setAllowance } from "@/src/redux-store/userSlice";
 
 /* ---------------- Splash Screen ---------------- */
-const SplashScreen = () => (
+export const SplashScreen = () => (
   <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
@@ -52,8 +56,10 @@ const AccessDenied = ({
   email: string;
 }) => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const handleSignOut = () => {
     removeLocalStorage("userInfo");
+    dispatch(logout());
     router.push("/login");
   };
   return (
@@ -127,15 +133,23 @@ export default function ClientAuthGuard({
   const pathname = usePathname();
   const user = getLocalStorage("userInfo");
   const token = user?.access_token;
-  const isAllowed = user?.isAllowed;
+  const isAllowed =
+    useSelector((state: RootState) => state.user.isAllowed) || false;
   const username = user?.username;
   const email = user?.email;
-
+  const dispatch = useDispatch<AppDispatch>();
   const [state, setState] = useState<
     "initial" | "not-access" | "access" | "auth"
   >("initial");
 
+  const handleIsAllowed = useCallback(async () => {
+    if (!email) return;
+    const { result } = await handleGetUserAllowance(email);
+    dispatch(setAllowance({ isAllowed: result?.isAllowed || false }));
+  }, [email, dispatch]);
+
   useEffect(() => {
+    handleIsAllowed();
     if (!token) {
       setState("auth");
       router.push(
@@ -148,10 +162,10 @@ export default function ClientAuthGuard({
     } else {
       setState("not-access");
     }
-  }, [token, isAllowed, pathname, router]);
+  }, [token, isAllowed, pathname, router, handleIsAllowed]);
 
   if (state === "initial") return <SplashScreen />;
   if (state === "not-access")
     return <AccessDenied username={username} email={email} />;
-  return <>{children}</>;
+  if (state == "access" || state == "auth") return <>{children}</>;
 }

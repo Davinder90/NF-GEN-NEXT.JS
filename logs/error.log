@@ -888,3 +888,6 @@
 2025-08-28 19:43:03 [[31MERROR[39M]: DATABASE_ERROR, An error occurred while processing your request. Operation `users.findOne()` buffering timed out after 10000ms
 2025-08-31 12:12:46 [[31MERROR[39M]: Internal Server Error, please try again later E11000 duplicate key error collection: test.sites_5gs index: Latitude_1 dup key: { Latitude: 28.2234 }
 2025-08-31 12:12:46 [[31MERROR[39M]: Internal Server Error, please try again later E11000 duplicate key error collection: test.sites_5gs index: Latitude_1 dup key: { Latitude: 28.2234 }
+2025-09-02 18:20:57 [[31MERROR[39M]: DATABASE_ERROR, An error occurred while processing your request. Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
+2025-09-02 19:47:49 [[31MERROR[39M]: Internal Server Error, please try again later Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
+2025-09-02 20:02:22 [[31MERROR[39M]: DATABASE_ERROR, An error occurred while processing your request. Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.

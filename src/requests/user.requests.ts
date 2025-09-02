@@ -54,3 +54,15 @@ export const handleUpdateUserAllowance = async (
     ? result.data
     : { success: false, message: result.statusText };
 };
+
+export const handleGetUserAllowance = async (email: string) => {
+  const result = (await asyncResponseHandler(async () => {
+    return await axiosInstance.post(
+      API_ROUTES.USER_ROUTE + API_ROUTES.GET_USER_ALLOWANCE,
+      { email }
+    );
+  })) as AxiosResponse;
+  return result?.data
+    ? result.data
+    : { success: false, message: result.statusText };
+};

@@ -3,7 +3,7 @@ import { useState } from "react";
 import ThemeToggle from "@components/Theme/ThemeToggle";
 import Link from "next/link";
 import { IoMenu } from "react-icons/io5";
-import { SignOutButton } from "@components/Buttons/Buttons";
+import { AdminButton, SignOutButton } from "@components/Buttons/Buttons";
 import Image from "next/image";
 import { Images } from "@/src/config/Images";
 import { CLIENT_ROUTES } from "@/src/lib/utils/common-constants";
@@ -70,6 +70,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-6">
           <NavLinks type="big" />
           <SignOutButton />
+          <AdminButton />
           <ThemeToggle />
         </div>
 
@@ -89,6 +90,7 @@ const Navbar = () => {
         <div className="md:hidden mt-4 bg-white dark:bg-[#121212] shadow-lg border border-white rounded-lg px-4 py-4 space-y-4 flex flex-col">
           <NavLinks type="small" />
           <SignOutButton />
+          <AdminButton />
           <ThemeToggle />
         </div>
       )}

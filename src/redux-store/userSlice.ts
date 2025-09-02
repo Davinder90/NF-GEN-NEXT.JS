@@ -1,0 +1,43 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface UserState {
+  name: string | null;
+  email: string | null;
+  isAllowed: boolean;
+}
+
+const initialState: UserState = {
+  name: null,
+  email: null,
+  isAllowed: false,
+};
+
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    login: (
+      state,
+      action: PayloadAction<{ name: string; email: string; isAllowed: boolean }>
+    ) => {
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+      state.isAllowed = action.payload.isAllowed;
+      return state;
+    },
+    logout: (state) => {
+      state.name = null;
+      state.email = null;
+      state.isAllowed = false;
+      return state;
+    },
+    setAllowance: (state, action: PayloadAction<{ isAllowed: boolean }>) => {
+      console.log(state.isAllowed, action.payload.isAllowed);
+      state.isAllowed = action.payload.isAllowed;
+      return state;
+    },
+  },
+});
+
+export const { login, logout, setAllowance } = userSlice.actions;
+export default userSlice.reducer;

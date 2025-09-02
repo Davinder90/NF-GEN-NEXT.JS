@@ -3,6 +3,9 @@ import { FileFormat, FilesFormats, FileType, Network } from "@type/site.types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FILE_FORMATS } from "@/src/lib/utils/common-constants";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux-store/store";
+import { SplashScreen } from "../components/Auth/AuthGaurd";
 
 const FormatsBox = ({
   formats,
@@ -126,6 +129,9 @@ const FileBox = ({ file }: { file: FilesFormats }) => {
 };
 
 const Home = () => {
+  const isAllowed = useSelector((state: RootState) => state.user.isAllowed);
+  if (!isAllowed) return <SplashScreen />;
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-black dark:to-zinc-900 py-12 px-6 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">

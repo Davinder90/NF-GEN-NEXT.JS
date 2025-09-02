@@ -185,3 +185,24 @@ export const updateUserAllowance = async (
   )) as IResponseObject;
   return generateResponseObject(result);
 };
+
+export const getUserAllowance = async (email: string) => {
+  const result = (await asyncRequestHandler(
+    async () => {
+      const user = await User.findOne({ email });
+      if (!user)
+        return {
+          error: "User not found",
+          status_code: StatusCodes.OK,
+        };
+
+      return {
+        message: `Allowance fetched successfully`,
+        data: { isAllowed: user?.isAllowed },
+      };
+    },
+    "Internal Server Error, please try again later",
+    StatusCodes.INTERNAL_SERVER_ERROR
+  )) as IResponseObject;
+  return generateResponseObject(result);
+};

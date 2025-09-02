@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { CLIENT_ROUTES } from "@/src/lib/utils/common-constants";
 import { Toaster } from "react-hot-toast";
 import { toastOptions } from "../lib/utils/toast";
+import { Provider } from "react-redux";
+import { store } from "../redux-store/store";
 
 export default function RootLayout({
   children,
@@ -27,11 +29,13 @@ export default function RootLayout({
           enableSystem={true}
           defaultTheme="system"
         >
-          <ClientAuthGuard>
-            {showNavbar && <Navbar />}
-            {children}
-            <Toaster toastOptions={toastOptions} position="top-right" />
-          </ClientAuthGuard>
+          <Provider store={store}>
+            <ClientAuthGuard>
+              {showNavbar && <Navbar />}
+              {children}
+              <Toaster toastOptions={toastOptions} position="top-right" />
+            </ClientAuthGuard>
+          </Provider>
         </ThemeProvider>
       </body>
     </html>
