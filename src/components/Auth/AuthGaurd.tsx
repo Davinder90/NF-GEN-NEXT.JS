@@ -8,8 +8,8 @@ import {
   removeLocalStorage,
 } from "@/src/lib/helpers/localStorage";
 import { handleGetUserAllowance } from "@/src/requests/user.requests";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@redux-store/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@redux-store/store";
 import { logout, setAllowance } from "@/src/redux-store/userSlice";
 
 /* ---------------- Splash Screen ---------------- */
@@ -124,6 +124,7 @@ const AccessDenied = ({
 };
 
 /* ---------------- Client Auth Guard ---------------- */
+
 export default function ClientAuthGuard({
   children,
 }: {
@@ -132,40 +133,59 @@ export default function ClientAuthGuard({
   const router = useRouter();
   const pathname = usePathname();
   const user = getLocalStorage("userInfo");
+
   const token = user?.access_token;
-  const isAllowed =
-    useSelector((state: RootState) => state.user.isAllowed) || false;
   const username = user?.username;
   const email = user?.email;
+
   const dispatch = useDispatch<AppDispatch>();
+
   const [state, setState] = useState<
     "initial" | "not-access" | "access" | "auth"
   >("initial");
 
   const handleIsAllowed = useCallback(async () => {
-    if (!email) return;
-    const { result } = await handleGetUserAllowance(email);
-    dispatch(setAllowance({ isAllowed: result?.isAllowed || false }));
+    if (!email) return false;
+    try {
+      const { result } = await handleGetUserAllowance(email);
+      const allowed = result?.isAllowed || false;
+      dispatch(setAllowance({ isAllowed: allowed }));
+      return allowed;
+    } catch (err) {
+      console.error("Error fetching allowance:", err);
+      dispatch(setAllowance({ isAllowed: false }));
+      return false;
+    }
   }, [email, dispatch]);
 
   useEffect(() => {
-    handleIsAllowed();
-    if (!token) {
-      setState("auth");
-      router.push(
-        pathname === CLIENT_ROUTES.LOGIN_ROUTE
-          ? CLIENT_ROUTES.LOGIN_ROUTE
-          : CLIENT_ROUTES.SIGNUP_ROUTE
-      );
-    } else if (token && isAllowed) {
-      setState("access");
-    } else {
-      setState("not-access");
-    }
-  }, [token, isAllowed, pathname, router, handleIsAllowed]);
+    const checkAuth = async () => {
+      if (!token) {
+        setState("auth");
+        router.push(
+          pathname === CLIENT_ROUTES.LOGIN_ROUTE
+            ? CLIENT_ROUTES.LOGIN_ROUTE
+            : CLIENT_ROUTES.SIGNUP_ROUTE
+        );
+        return;
+      }
+
+      // only call once when token/email changes
+      const allowed = await handleIsAllowed();
+      if (allowed) {
+        setState("access");
+      } else {
+        setState("not-access");
+      }
+    };
+
+    checkAuth();
+  }, [token, pathname, router, handleIsAllowed]);
 
   if (state === "initial") return <SplashScreen />;
   if (state === "not-access")
     return <AccessDenied username={username} email={email} />;
-  if (state == "access" || state == "auth") return <>{children}</>;
+  if (state === "access" || state === "auth") return <>{children}</>;
+
+  return null;
 }

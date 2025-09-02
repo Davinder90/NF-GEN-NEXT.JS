@@ -57393,3 +57393,5 @@
 2025-09-02 20:16:18 [[32MINFO[39M]: ✅ Database is connected successfully
 2025-09-02 20:16:50 [[32MINFO[39M]: ✅ Database is connected successfully
 2025-09-02 20:16:50 [[32MINFO[39M]: ✅ Database is connected successfully
+2025-09-02 20:46:54 [[31MERROR[39M]: Internal Server Error, please try again later Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
+2025-09-02 20:46:54 [[32MINFO[39M]: ✅ Database is connected successfully
