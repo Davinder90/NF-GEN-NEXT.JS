@@ -16,9 +16,9 @@ import { StatusCodes } from "http-status-codes";
 import { IResponseObject } from "@interfaces/common.interfaces";
 import { dbConnection } from "@/src/config/dbConnection";
 import Admin from "@/src/models/admin.model";
-dbConnection();
 
 export const signIn = async (data: ISignInRequestBodyInterface) => {
+  await dbConnection();
   const { email, password } = data;
   const result = await asyncRequestHandler(
     async (): Promise<IResponseObject> => {
@@ -65,6 +65,7 @@ export const generateUsername = async (name: string): Promise<string> => {
 };
 
 export const signUp = async (data: ISignUpRequestBodyInterface) => {
+  await dbConnection();
   const { name, email, password } = data;
   const result = await asyncRequestHandler(
     async () => {
@@ -103,6 +104,7 @@ export const getUsers = async (
   limit: number,
   username: string
 ) => {
+  await dbConnection();
   const result = await asyncRequestHandler(
     async () => {
       const user = await User.findOne({ email: auth_email });
@@ -132,6 +134,7 @@ export const getUsers = async (
 };
 
 export const getUser = async (email: string) => {
+  await dbConnection();
   const result = (await asyncRequestHandler(
     async () => {
       const user = await User.findOne({ email });
@@ -157,6 +160,7 @@ export const updateUserAllowance = async (
   email: string,
   isAllowed: boolean
 ) => {
+  await dbConnection();
   const result = (await asyncRequestHandler(
     async () => {
       const isAdmin = await Admin.findOne({ email: auth_email });
@@ -187,6 +191,7 @@ export const updateUserAllowance = async (
 };
 
 export const getUserAllowance = async (email: string) => {
+  await dbConnection();
   const result = (await asyncRequestHandler(
     async () => {
       const user = await User.findOne({ email });
