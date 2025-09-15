@@ -10,11 +10,21 @@ import { Model } from "mongoose";
 import { ITowerModel } from "@interfaces/models.interfaces";
 
 // paths constants
+// Detect if running in AWS Lambda
+const IS_LAMBDA = process.env.AWS_EXECUTION_ENV !== undefined;
+
+// base directory
 const ROOT_DIRECTORY_PATH = process.cwd();
-const STORAGE_PATH = path.join(ROOT_DIRECTORY_PATH, "src", "storage");
+
+// storage path (local → ./src/storage, lambda → /tmp/storage)
+const STORAGE_PATH = IS_LAMBDA
+  ? path.join("/tmp", "storage")
+  : path.join(ROOT_DIRECTORY_PATH, "src", "storage");
+
 export const PATHS = {
-  ROOT_DIRECTORY_PATH: ROOT_DIRECTORY_PATH,
-  STORAGE_PATH: STORAGE_PATH,
+  ROOT_DIRECTORY_PATH,
+  STORAGE_PATH,
+
   INPUT_COMBINE_FILES_PATH: path.join(
     STORAGE_PATH,
     "EXCEL FILE STORAGE SETUP",
