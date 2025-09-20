@@ -1,11 +1,12 @@
 import FileModel from "@/src/models/file.model";
-import { asyncRequestHandler, generateResponseObject } from "../helpers/common.helpers";
-import { CustomFileType } from "../type/helpers.types";
-import { ERROR_MESSAGES } from "../utils/common-constants";
+import {
+  asyncRequestHandler,
+  generateResponseObject,
+} from "@helpers/common.helpers";
+import { CustomFileType } from "@type/helpers.types";
+import { ERROR_MESSAGES } from "@utils/common-constants";
 import { StatusCodes } from "http-status-codes";
-import { IResponseObject } from "../interfaces/common.interfaces";
-import { PATHS } from "../utils/constants";
-
+import { IResponseObject } from "@interfaces/common.interfaces";
 
 export const createOrUpdateFile = async (
   filename: string,
@@ -14,17 +15,16 @@ export const createOrUpdateFile = async (
   size: string,
   destination: string
 ) => {
-  const file = await FileModel.findOneAndUpdate(
-    { filename }, 
-    { destination ,size, file_type, network_type, updatedAt: new Date() },
-    { new: true, upsert: true } 
+  await FileModel.findOneAndUpdate(
+    { filename },
+    { destination, size, file_type, network_type, updatedAt: new Date() },
+    { new: true, upsert: true }
   );
   return;
 };
 
-
 export const deleteFile = async (filename: string) => {
-  const result = await FileModel.findOneAndDelete({ filename });
+  await FileModel.findOneAndDelete({ filename });
   return;
 };
 
@@ -54,7 +54,7 @@ export const getFilesFromDB = async () => {
           createdAt: indiaTime(file.createdAt ?? new Date()),
           modifiedAt: indiaTime(file.updatedAt ?? new Date()),
           destination: file.destination,
-          sizeInMB : file.size
+          sizeInMB: file.size,
         });
       });
 

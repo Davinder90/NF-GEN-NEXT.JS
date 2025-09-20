@@ -22,11 +22,8 @@ const STORAGE_PATH = IS_LAMBDA
   : path.join(ROOT_DIRECTORY_PATH, "src", "storage");
 
 export const PATHS = {
-<<<<<<< HEAD
   AWS_OUTPUT_FILES: "OUTPUT FILES",
   AWS_FORMAT_FILES: "FORMAT FILES",
-=======
->>>>>>> b4011624a6857934db44e3d66240029bba2d30dc
   ROOT_DIRECTORY_PATH,
   STORAGE_PATH,
 

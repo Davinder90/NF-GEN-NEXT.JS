@@ -30,7 +30,11 @@ import { establishAwsTemporaryStorage, uploadFile } from "./aws-sdk.helpers";
 import { createOrUpdateFile } from "../services/file.services";
 
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
-export const generateFileUniqueName = (file: File, snap_name: string, username: string) => {
+export const generateFileUniqueName = (
+  file: File,
+  snap_name: string,
+  username: string
+) => {
   return (
     Date.now() +
     "-" +
@@ -45,10 +49,10 @@ export const generateFileUniqueName = (file: File, snap_name: string, username: 
 };
 
 export const deleteFile = async (path: string) => {
-
-  if (!path) return;
   const result = (await asyncRequestHandler(
     async () => {
+      if (!path)
+        return { error: "Path is not defined", status_code: StatusCodes.OK };
       fs.unlinkSync(path);
     },
     ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -317,18 +321,26 @@ export const generateReport = async (site_data: ISiteReportData) => {
         }
       }
 
-      const destination = IS_LAMBDA ? PATHS.AWS_FORMAT_FILES : PATHS.OUTPUT_FILES_PATH;
+      const destination = IS_LAMBDA
+        ? PATHS.AWS_FORMAT_FILES
+        : PATHS.OUTPUT_FILES_PATH;
       await uploadFile(site_data.output_file_path);
-      const filestats = fs.statSync(site_data.output_file_path)
+      const filestats = fs.statSync(site_data.output_file_path);
       const size = filestats.size / (1024 * 1024);
-      await createOrUpdateFile(file_name, file_type, network, `${size}`, destination);
-      if(IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
-      
+      await createOrUpdateFile(
+        file_name,
+        file_type,
+        network,
+        `${size}`,
+        destination
+      );
+      if (IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
+
       return {
         message: "File generated successfully",
         data: {
           filename: file_name,
-          destination
+          destination,
         },
       };
     },

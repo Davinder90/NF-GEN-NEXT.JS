@@ -47,19 +47,26 @@ export async function uploadFile(filePath: string) {
 }
 
 export async function deleteFileFromAws(filePath: string) {
-  if (!IS_LAMBDA) return;
-  logger.info("Inside production 3");
-  if (!fs.existsSync(filePath)) {
-    return { error: `File not found: ${filePath}`, status: false };
-  }
+  const result = (await asyncRequestHandler(
+    async () => {
+      if (!IS_LAMBDA) return;
+      logger.info("Inside production 3");
+      if (!fs.existsSync(filePath)) {
+        return { error: `File not found: ${filePath}`, status: false };
+      }
 
-  await s3.send(
-    new DeleteObjectCommand({
-      Bucket: env_var.AWS_BUCKET_NAME as string,
-      Key: filePath as string,
-    })
-  );
-  return { message: `File deleted: ${filePath}`, status: true };
+      await s3.send(
+        new DeleteObjectCommand({
+          Bucket: env_var.AWS_BUCKET_NAME as string,
+          Key: filePath as string,
+        })
+      );
+    },
+    ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+    StatusCodes.INTERNAL_SERVER_ERROR
+  )) as IResponseObject;
+  if (result?.error) return generateResponseObject(result);
+  return null;
 }
 
 async function streamToBuffer(stream: Readable): Promise<Buffer> {
