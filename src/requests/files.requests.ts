@@ -8,13 +8,14 @@ export const handleUploadImage = async (
   body: FormData,
   snapName: string,
   multiple: boolean,
-  prev_file: string
+  prev_file: string,
+  username: string
 ) => {
   const result = (await asyncResponseHandler(async () => {
     return await axiosInstance.post(
       API_ROUTES.FILE_ROUTE +
         API_ROUTES.FILE_UPLOAD_IMAGE_ROUTE +
-        `?snapName=${snapName}&multiple=${multiple}`,
+        `?snapName=${snapName}&multiple=${multiple}&username=${username}`,
       body,
       {
         headers: {
@@ -57,13 +58,14 @@ export const handleDeleteFiles = async (Files: ISnap[]) => {
 export const handleUploadFile = async (
   body: FormData,
   fileName: string,
-  prev_file: string
+  prev_file: string,
+  username: string
 ) => {
   const result = (await asyncResponseHandler(async () => {
     return await axiosInstance.post(
       API_ROUTES.FILE_ROUTE +
         API_ROUTES.FILE_UPLOAD_FILE_ROUTE +
-        `?fileName=${fileName}`,
+        `?fileName=${fileName}&username=${username}`,
       body,
       {
         headers: {

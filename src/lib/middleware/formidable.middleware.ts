@@ -52,7 +52,8 @@ function nextRequestToIncomingMessage(req: NextRequest): IncomingMessage {
 export const parseSingleFile = async (
   req: NextRequest,
   snapName: string,
-  storage_path: string
+  storage_path: string,
+  username: string
 ): Promise<SingleUploadResult> => {
   const form = formidable({
     uploadDir: storage_path,
@@ -66,7 +67,7 @@ export const parseSingleFile = async (
       if (err) return reject(err);
       const file = Array.isArray(files.file) ? files.file[0] : files.file;
       if (!file) return reject(new Error("No file uploaded"));
-      const uniqueName = generateFileUniqueName(file, snapName);
+      const uniqueName = generateFileUniqueName(file, snapName, username);
       const destination = path.join(storage_path, uniqueName);
       await fs.rename(file.filepath, destination);
       resolve({ fields, file, destination, filename: uniqueName });
@@ -78,6 +79,7 @@ export const parseMultipleFiles = async (
   req: NextRequest,
   snapName: string,
   storage_path: string,
+  username: string,
   maxFiles: number = 40
 ): Promise<MultiUploadResult> => {
   const form = formidable({
@@ -96,7 +98,7 @@ export const parseMultipleFiles = async (
         const fileArray = Array.isArray(fileList) ? fileList : [fileList];
         savedFiles[key] = [];
         for (const file of fileArray) {
-          const uniqueName = generateFileUniqueName(file as File, snapName);
+          const uniqueName = generateFileUniqueName(file as File, snapName, username);
           const destination = path.join(storage_path, uniqueName);
           await fs.rename((file as File)?.filepath, destination);
           savedFiles[key].push({ filename: uniqueName, destination });

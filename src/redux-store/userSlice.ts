@@ -32,7 +32,6 @@ const userSlice = createSlice({
       return state;
     },
     setAllowance: (state, action: PayloadAction<{ isAllowed: boolean }>) => {
-      console.log(state.isAllowed, action.payload.isAllowed);
       state.isAllowed = action.payload.isAllowed;
       return state;
     },

@@ -57395,3 +57395,65 @@
 2025-09-02 20:16:50 [[32MINFO[39M]: ✅ Database is connected successfully
 2025-09-02 20:46:54 [[31MERROR[39M]: Internal Server Error, please try again later Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
 2025-09-02 20:46:54 [[32MINFO[39M]: ✅ Database is connected successfully
+2025-09-16 11:19:58 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-16 11:19:58 [[31MERROR[39M]:  MongoDB connection attempt 1 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:19:58 [[32MINFO[39M]: ⏳ Retrying in 1s...
+2025-09-16 11:19:59 [[32MINFO[39M]: 🔌 Attempt 2 to connect MongoDB...
+2025-09-16 11:19:59 [[31MERROR[39M]:  MongoDB connection attempt 2 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:19:59 [[32MINFO[39M]: ⏳ Retrying in 2s...
+2025-09-16 11:20:01 [[32MINFO[39M]: 🔌 Attempt 3 to connect MongoDB...
+2025-09-16 11:20:01 [[31MERROR[39M]:  MongoDB connection attempt 3 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:01 [[32MINFO[39M]: ⏳ Retrying in 4s...
+2025-09-16 11:20:05 [[32MINFO[39M]: 🔌 Attempt 4 to connect MongoDB...
+2025-09-16 11:20:05 [[31MERROR[39M]:  MongoDB connection attempt 4 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:05 [[32MINFO[39M]: ⏳ Retrying in 8s...
+2025-09-16 11:20:13 [[32MINFO[39M]: 🔌 Attempt 5 to connect MongoDB...
+2025-09-16 11:20:13 [[31MERROR[39M]:  MongoDB connection attempt 5 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:13 [[31MERROR[39M]:  All retries failed. Giving up.
+2025-09-16 11:26:41 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-16 11:26:41 [[32MINFO[39M]:  Database is connected successfully
+2025-09-17 11:11:16 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-17 11:11:18 [[32MINFO[39M]:  Database is connected successfully
+2025-09-17 11:18:21 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-17 11:18:22 [[32MINFO[39M]:  Database is connected successfully
+2025-09-17 11:30:28 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:30:28 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:30:28 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:30:45 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:30:45 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:30:45 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:31:57 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:31:57 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:31:57 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:11 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:32:11 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:32:11 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:20 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:32:20 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:32:20 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:44 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:32:44 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:32:44 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:35:22 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:35:22 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:35:22 [[32MINFO[39M]: 4G SCFT VoLTE KPI
+2025-09-17 11:35:22 [[32MINFO[39M]: 4G SCFT VoLTE Plots
+2025-09-17 11:35:23 [[32MINFO[39M]: 4G SCFT Mandatory Audit Snap
+2025-09-17 11:35:23 [[32MINFO[39M]: 4G SCFT Audit Sheet
+2025-09-17 11:35:23 [[32MINFO[39M]: 4G SCFT GIS
+2025-09-17 11:35:23 [[32MINFO[39M]: 4G SCFT GIS_Data
+2025-09-17 11:35:23 [[32MINFO[39M]: 4G SCFT Log list
+2025-09-17 11:45:17 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-17 11:45:18 [[32MINFO[39M]:  Database is connected successfully
+2025-09-17 11:49:33 [[31MERROR[39M]: Internal server error, please try again later ENOENT: no such file or directory, unlink 'C:\Users\dasingh\Downloads\NF-GEN-NEXT.JS-main\NF-GEN-NEXT.JS-main\OUTPUT FILES\17092025_HR_L850_SCFT_NHPR81.xlsx\17092025_HR_L850_SCFT_NHPR81.xlsx'
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT LTE KPI
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT SCFT Plots
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT VoLTE KPI
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT VoLTE Plots
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT Mandatory Audit Snap
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT Audit Sheet
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT GIS
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT GIS_Data
+2025-09-17 11:51:15 [[32MINFO[39M]: 4G SCFT Log list
+2025-09-18 10:19:19 [[32MINFO[39M]: 🔌 Attempt 1 to connect MongoDB...
+2025-09-18 10:19:20 [[32MINFO[39M]:  Database is connected successfully

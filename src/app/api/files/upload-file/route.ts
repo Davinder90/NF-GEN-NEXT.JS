@@ -9,10 +9,13 @@ export async function POST(req: NextRequest) {
   if (authResponse) return authResponse;
   const searchParams = req.nextUrl.searchParams;
   const fileName = searchParams.get("fileName") as string;
+  const username = searchParams.get("username") as string;
+  
   const result = await parseSingleFile(
     req,
     fileName,
-    PATHS.INPUT_COMBINE_FILES_PATH
+    PATHS.INPUT_COMBINE_FILES_PATH,
+    username
   );
   return await inputFile(req, [
     {

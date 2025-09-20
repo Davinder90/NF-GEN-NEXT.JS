@@ -23,11 +23,14 @@ import { SCFT_4G } from "./exceljs/4gscft.helpers";
 import { ISiteReportData, ISnap } from "@interfaces/site.interfaces";
 import { CAT_4G } from "./exceljs/4gcat.helpers";
 import { ERROR_MESSAGES } from "@utils/common-constants";
-import { CustomFileType, mimeTypeMap } from "@type/helpers.types";
+import { mimeTypeMap } from "@type/helpers.types";
 import { CAT_5G } from "./exceljs/5gcat.helpers";
 import { SCFT_ANTS_5G } from "./exceljs/5gscftAnts.helpers";
+import { establishAwsTemporaryStorage, uploadFile } from "./aws-sdk.helpers";
+import { createOrUpdateFile } from "../services/file.services";
 
-export const generateFileUniqueName = (file: File, snap_name: string) => {
+const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
+export const generateFileUniqueName = (file: File, snap_name: string, username: string) => {
   return (
     Date.now() +
     "-" +
@@ -35,11 +38,14 @@ export const generateFileUniqueName = (file: File, snap_name: string) => {
     "-" +
     snap_name +
     "-" +
+    username +
+    "-" +
     file.originalFilename
   );
 };
 
 export const deleteFile = async (path: string) => {
+
   if (!path) return;
   const result = (await asyncRequestHandler(
     async () => {
@@ -122,45 +128,45 @@ export const deleteFiles = (files: ISnap[]) => {
   return;
 };
 
-export const getFiles = async () => {
-  const result = (await asyncRequestHandler(
-    async () => {
-      const indiaTime = (date: Date) => {
-        return new Date(date).toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
-        });
-      };
+// export const getFiles = async () => {
+//   const result = (await asyncRequestHandler(
+//     async () => {
+//       const indiaTime = (date: Date) => {
+//         return new Date(date).toLocaleString("en-IN", {
+//           timeZone: "Asia/Kolkata",
+//           year: "numeric",
+//           month: "2-digit",
+//           day: "2-digit",
+//           hour: "2-digit",
+//           minute: "2-digit",
+//           second: "2-digit",
+//           hour12: true,
+//         });
+//       };
 
-      const Files: CustomFileType[] = [];
-      const folder = fs.readdirSync(PATHS.OUTPUT_FILES_PATH);
-      folder.forEach((file) => {
-        const file_path = path.join(PATHS.OUTPUT_FILES_PATH, file);
-        const file_stats = fs.statSync(file_path);
-        Files.push({
-          filename: file,
-          createdAt: indiaTime(file_stats.birthtime),
-          modifiedAt: indiaTime(file_stats.mtime),
-          destination: PATHS.OUTPUT_FILES_PATH,
-          sizeInMB: file_stats.size / (1024 * 1024),
-        });
-      });
-      return {
-        message: "Files fetched successfully",
-        data: { Files },
-      };
-    },
-    ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
-    StatusCodes.INTERNAL_SERVER_ERROR
-  )) as IResponseObject;
-  return generateResponseObject(result);
-};
+//       const Files: CustomFileType[] = [];
+//       const folder = fs.readdirSync(PATHS.OUTPUT_FILES_PATH);
+//       folder.forEach((file) => {
+//         const file_path = path.join(PATHS.OUTPUT_FILES_PATH, file);
+//         const file_stats = fs.statSync(file_path);
+//         Files.push({
+//           filename: file,
+//           createdAt: indiaTime(file_stats.birthtime),
+//           modifiedAt: indiaTime(file_stats.mtime),
+//           destination: PATHS.OUTPUT_FILES_PATH,
+//           sizeInMB: file_stats.size / (1024 * 1024),
+//         });
+//       });
+//       return {
+//         message: "Files fetched successfully",
+//         data: { Files },
+//       };
+//     },
+//     ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
+//     StatusCodes.INTERNAL_SERVER_ERROR
+//   )) as IResponseObject;
+//   return generateResponseObject(result);
+// };
 
 export const getImage = (filename: string, destination: string) => {
   const buffer = fs.readFileSync(destination);
@@ -229,6 +235,7 @@ const deletePlots = async (plots: ISnap[][]) => {
 export const generateReport = async (site_data: ISiteReportData) => {
   const result = (await asyncRequestHandler(
     async () => {
+      await establishAwsTemporaryStorage();
       const {
         combine_report: { single_combine, pre_combine, post_combine },
         tower_data: { state, tech, siteId },
@@ -305,16 +312,23 @@ export const generateReport = async (site_data: ISiteReportData) => {
         );
         const newPath = path.join(PATHS.OUTPUT_FILES_PATH, file_name);
 
-        // ✅ Wait until the file is fully written
         if (fs.existsSync(oldPath)) {
           fs.renameSync(oldPath, newPath);
         }
       }
+
+      const destination = IS_LAMBDA ? PATHS.AWS_FORMAT_FILES : PATHS.OUTPUT_FILES_PATH;
+      await uploadFile(site_data.output_file_path);
+      const filestats = fs.statSync(site_data.output_file_path)
+      const size = filestats.size / (1024 * 1024);
+      await createOrUpdateFile(file_name, file_type, network, `${size}`, destination);
+      if(IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
+      
       return {
         message: "File generated successfully",
         data: {
           filename: file_name,
-          destination: PATHS.OUTPUT_FILES_PATH,
+          destination
         },
       };
     },

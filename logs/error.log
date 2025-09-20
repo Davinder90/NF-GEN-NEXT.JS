@@ -892,3 +892,16 @@
 2025-09-02 19:47:49 [[31MERROR[39M]: Internal Server Error, please try again later Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
 2025-09-02 20:02:22 [[31MERROR[39M]: DATABASE_ERROR, An error occurred while processing your request. Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
 2025-09-02 20:46:54 [[31MERROR[39M]: Internal Server Error, please try again later Cannot call `users.findOne()` before initial connection is complete if `bufferCommands = false`. Make sure you `await mongoose.connect()` if you have `bufferCommands = false`.
+2025-09-16 11:19:58 [[31MERROR[39M]:  MongoDB connection attempt 1 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:19:59 [[31MERROR[39M]:  MongoDB connection attempt 2 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:01 [[31MERROR[39M]:  MongoDB connection attempt 3 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:05 [[31MERROR[39M]:  MongoDB connection attempt 4 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:13 [[31MERROR[39M]:  MongoDB connection attempt 5 failed The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2025-09-16 11:20:13 [[31MERROR[39M]:  All retries failed. Giving up.
+2025-09-17 11:30:28 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:30:45 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:31:57 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:11 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:20 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:32:44 [[31MERROR[39M]: Internal server error, please try again later The "path" argument must be of type string. Received undefined
+2025-09-17 11:49:33 [[31MERROR[39M]: Internal server error, please try again later ENOENT: no such file or directory, unlink 'C:\Users\dasingh\Downloads\NF-GEN-NEXT.JS-main\NF-GEN-NEXT.JS-main\OUTPUT FILES\17092025_HR_L850_SCFT_NHPR81.xlsx\17092025_HR_L850_SCFT_NHPR81.xlsx'

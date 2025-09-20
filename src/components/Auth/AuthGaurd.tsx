@@ -10,7 +10,7 @@ import {
 import { handleGetUserAllowance } from "@/src/requests/user.requests";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux-store/store";
-import { logout, setAllowance } from "@/src/redux-store/userSlice";
+import { login, logout, setAllowance } from "@/src/redux-store/userSlice";
 
 /* ---------------- Splash Screen ---------------- */
 export const SplashScreen = () => (
@@ -139,7 +139,7 @@ export default function ClientAuthGuard({
   const email = user?.email;
 
   const dispatch = useDispatch<AppDispatch>();
-
+  dispatch(login({name: username, email, isAllowed: false}))
   const [state, setState] = useState<
     "initial" | "not-access" | "access" | "auth"
   >("initial");
