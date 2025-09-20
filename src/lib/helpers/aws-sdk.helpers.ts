@@ -1,6 +1,11 @@
 import { env_var } from "@/src/config/env.config";
 import logger from "@/src/log/logger";
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import fs from "fs";
 import path from "path";
 import { PATHS } from "../utils/constants";
@@ -8,8 +13,8 @@ import { Readable } from "stream";
 import { NextRequest, NextResponse } from "next/server";
 import { StatusCodes } from "http-status-codes";
 import { asyncRequestHandler, generateResponseObject } from "./common.helpers";
-import { IResponseObject } from "../interfaces/common.interfaces";
-import { ERROR_MESSAGES } from "../utils/common-constants";
+import { IResponseObject } from "@interfaces/common.interfaces";
+import { ERROR_MESSAGES } from "@utils/common-constants";
 
 const s3 = new S3Client({
   region: env_var.AWS_BUCKET_REGION as string,
@@ -22,37 +27,39 @@ const s3 = new S3Client({
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
 
 export async function uploadFile(filePath: string) {
-    if(!IS_LAMBDA) return;
-    logger.info("Inside production 4");
-    if (!fs.existsSync(filePath)) {
-    return {error: `File not found: ${filePath}`, status: false};
+  if (!IS_LAMBDA) return;
+  logger.info("Inside production 4");
+  if (!fs.existsSync(filePath)) {
+    return { error: `File not found: ${filePath}`, status: false };
   }
   const fileContent = fs.readFileSync(filePath);
   const fileName = path.basename(filePath);
 
   const uploadParams = {
     Bucket: env_var.AWS_BUCKET_NAME,
-    Key: path.join(PATHS.AWS_OUTPUT_FILES,fileName),
+    Key: path.join(PATHS.AWS_OUTPUT_FILES, fileName),
     Body: fileContent,
   };
 
   await s3.send(new PutObjectCommand(uploadParams));
   logger.info(`File uploaded: ${fileName}`);
-  return {message: `File uploaded: ${fileName}`, status: true}
+  return { message: `File uploaded: ${fileName}`, status: true };
 }
 
 export async function deleteFileFromAws(filePath: string) {
-  if(!IS_LAMBDA) return;
-    logger.info("Inside production 3");
-     if (!fs.existsSync(filePath)) {
-    return {error: `File not found: ${filePath}`, status: false};
+  if (!IS_LAMBDA) return;
+  logger.info("Inside production 3");
+  if (!fs.existsSync(filePath)) {
+    return { error: `File not found: ${filePath}`, status: false };
   }
 
-  await s3.send(new DeleteObjectCommand({
-    Bucket: env_var.AWS_BUCKET_NAME as string,
-    Key: filePath as string
-  }));
-  return {message: `File deleted: ${filePath}`, status: true}
+  await s3.send(
+    new DeleteObjectCommand({
+      Bucket: env_var.AWS_BUCKET_NAME as string,
+      Key: filePath as string,
+    })
+  );
+  return { message: `File deleted: ${filePath}`, status: true };
 }
 
 async function streamToBuffer(stream: Readable): Promise<Buffer> {
@@ -65,12 +72,12 @@ async function streamToBuffer(stream: Readable): Promise<Buffer> {
 }
 
 export async function downloadFileFromAws(req: NextRequest) {
-  if(!IS_LAMBDA) return;
-    logger.info("Inside production 2");
-    const { searchParams } = new URL(req.url);
-  const destination = searchParams.get("path") as string;   
-  const filename = searchParams.get("filename") as string;  
-  const key = path.join(destination, filename);           
+  if (!IS_LAMBDA) return;
+  logger.info("Inside production 2");
+  const { searchParams } = new URL(req.url);
+  const destination = searchParams.get("path") as string;
+  const filename = searchParams.get("filename") as string;
+  const key = path.join(destination, filename);
 
   const result = (await asyncRequestHandler(
     async () => {
@@ -98,7 +105,7 @@ export async function downloadFileFromAws(req: NextRequest) {
 
       const fileBuffer = await streamToBuffer(Body);
 
-      return new NextResponse(fileBuffer as any, {
+      return new NextResponse(new Uint8Array(fileBuffer), {
         status: 200,
         headers: {
           "Content-Disposition": `attachment; filename="${filename}"`,
@@ -113,34 +120,35 @@ export async function downloadFileFromAws(req: NextRequest) {
 
   if (result?.error) return generateResponseObject(result);
   return result as NextResponse;
-
 }
 
 export async function establishAwsTemporaryStorage() {
-    if(!IS_LAMBDA) return;
-    logger.info("Inside production 1");
-    const format_files = ["4G SCFT FORMAT.xlsx", "4G CAT FORMAT.xlsx", "5G CAT FORMAT.xlsx"];
-    fs.mkdirSync(PATHS.FILE_FORMATS_PATH, { recursive: true });
+  if (!IS_LAMBDA) return;
+  logger.info("Inside production 1");
+  const format_files = [
+    "4G SCFT FORMAT.xlsx",
+    "4G CAT FORMAT.xlsx",
+    "5G CAT FORMAT.xlsx",
+  ];
+  fs.mkdirSync(PATHS.FILE_FORMATS_PATH, { recursive: true });
 
-    for (const filename of format_files) {
-        const localPath = path.join(PATHS.FILE_FORMATS_PATH, filename);
-        if(fs.existsSync(localPath)){
-            console.log(` Already in /tmp, reusing: ${localPath}`);
-            continue;
-        }
-        const command = new GetObjectCommand({
-            Bucket: env_var.AWS_BUCKET_NAME,
-            Key: `${PATHS.AWS_FORMAT_FILES}/${filename}`
-        })
-
-        const {Body} = await s3.send(command);
-        if(Body instanceof Readable){
-            const fileStream = fs.createWriteStream(localPath);
-            await new Promise<void>((resolve, reject) => {
-            Body.pipe(fileStream)
-                .on("finish", resolve)
-                .on("error", reject);
-            });
-        }
+  for (const filename of format_files) {
+    const localPath = path.join(PATHS.FILE_FORMATS_PATH, filename);
+    if (fs.existsSync(localPath)) {
+      console.log(` Already in /tmp, reusing: ${localPath}`);
+      continue;
     }
+    const command = new GetObjectCommand({
+      Bucket: env_var.AWS_BUCKET_NAME,
+      Key: `${PATHS.AWS_FORMAT_FILES}/${filename}`,
+    });
+
+    const { Body } = await s3.send(command);
+    if (Body instanceof Readable) {
+      const fileStream = fs.createWriteStream(localPath);
+      await new Promise<void>((resolve, reject) => {
+        Body.pipe(fileStream).on("finish", resolve).on("error", reject);
+      });
+    }
+  }
 }
