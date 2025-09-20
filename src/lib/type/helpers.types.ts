@@ -22,7 +22,7 @@ export type CustomFileType = {
   createdAt: string;
   modifiedAt: string;
   destination: string;
-  sizeInMB: number;
+  sizeInMB: string;
 };
 
 export type SectorInput = SiteInput[];

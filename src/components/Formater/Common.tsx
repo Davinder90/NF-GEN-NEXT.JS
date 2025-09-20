@@ -64,6 +64,8 @@ import { TbHttpDelete } from "react-icons/tb";
 import { AiFillFileExcel, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdCloudDownload } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/redux-store/store";
 
 // prev and next buttons
 export const PrevAndNextButtons = ({
@@ -469,6 +471,7 @@ const SnapContainer = ({
   } = useAuditSnaps();
   const [disable, setDisable] = useState(false);
   const imageType = multiple ? "image/*" : ".png, .jpg, .jpeg, .webp";
+  const username = useSelector((state: RootState) => state.user.name) as string;
 
   // delete button
   const handleDeleteImage = async (index: number, snap: ISnap) => {
@@ -595,7 +598,8 @@ const SnapContainer = ({
       formData,
       labelName,
       multiple,
-      value.destination
+      value.destination,
+      username
     );
     toast.dismiss(loadingToast);
     setDisable(false);
@@ -987,6 +991,7 @@ export const InputCombineReportContainer = ({
     ].filename
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const username = useSelector((state: RootState) => state.user.name) as string;
 
   const removeFile = async () => {
     setSelectedFileName(null);
@@ -1053,7 +1058,8 @@ export const InputCombineReportContainer = ({
     } = await handleUploadFile(
       formData,
       labelName,
-      (inputCombineReport as InputCombineReport)[labelName].destination
+      (inputCombineReport as InputCombineReport)[labelName].destination,
+      username
     );
     toast.dismiss(loadingToast);
     (setOutputReport as React.Dispatch<React.SetStateAction<ISnap>>)({

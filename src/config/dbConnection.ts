@@ -15,31 +15,47 @@ if (!globalCache.mongoose) {
   globalCache.mongoose = { conn: null, promise: null };
 }
 
+const connectWithRetry = async (
+  uri: string,
+  maxRetries = 5,
+  delay = 1000
+): Promise<typeof mongoose> => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      logger.info(`🔌 Attempt ${attempt} to connect MongoDB...`);
+      const conn = await mongoose.connect(uri, {
+        bufferCommands: false,
+        serverSelectionTimeoutMS: 5000, // fail fast if cannot connect
+      });
+      logger.info(" Database is connected successfully");
+      return conn;
+    } catch (err) {
+      logger.error(` MongoDB connection attempt ${attempt} failed`, err);
+
+      if (attempt === maxRetries) {
+        logger.error(" All retries failed. Giving up.");
+        throw err;
+      }
+
+      // Exponential backoff
+      const wait = delay * Math.pow(2, attempt - 1);
+      logger.info(`⏳ Retrying in ${wait / 1000}s...`);
+      await new Promise((res) => setTimeout(res, wait));
+    }
+  }
+
+  throw new Error("MongoDB connection failed after retries");
+};
+
 export const dbConnection = async (): Promise<typeof mongoose> => {
   if (globalCache.mongoose!.conn) {
     return globalCache.mongoose!.conn;
   }
 
   if (!globalCache.mongoose!.promise) {
-    globalCache.mongoose!.promise = mongoose
-      .connect(env_var.DATABASE_KEY as string, {
-        bufferCommands: false,
-        serverSelectionTimeoutMS: 5000, // fail fast if cannot connect
-      })
-      .then((mongooseInstance) => mongooseInstance)
-      .catch((err) => {
-        // Reset promise so next attempt can retry
-        globalCache.mongoose!.promise = null;
-        throw err;
-      });
+    globalCache.mongoose!.promise = connectWithRetry(env_var.DATABASE_KEY as string);
   }
 
-  try {
-    globalCache.mongoose!.conn = await globalCache.mongoose!.promise;
-    logger.info("✅ Database is connected successfully");
-    return globalCache.mongoose!.conn;
-  } catch (err) {
-    logger.error("❌ Database connection failed", err);
-    throw err;
-  }
+  globalCache.mongoose!.conn = await globalCache.mongoose!.promise;
+  return globalCache.mongoose!.conn;
 };

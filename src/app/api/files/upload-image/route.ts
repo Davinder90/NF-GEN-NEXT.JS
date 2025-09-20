@@ -11,13 +11,15 @@ import { NextRequest } from "next/server";
 const fileUploader = async (
   req: NextRequest,
   multiple: boolean,
-  snapName: string
+  snapName: string,
+  username: string
 ) => {
   if (!multiple) {
     const sector_snap_result = await parseSingleFile(
       req,
       snapName,
-      PATHS.SECTOR_SNAPS_PATH
+      PATHS.SECTOR_SNAPS_PATH,
+      username
     );
     return [
       {
@@ -29,7 +31,8 @@ const fileUploader = async (
   const { files } = await parseMultipleFiles(
     req,
     snapName,
-    PATHS.BLOCKAGE_SNAPS_PATH
+    PATHS.BLOCKAGE_SNAPS_PATH,
+    username
   );
   return Object.values(files).flat();
 };
@@ -40,10 +43,12 @@ export async function POST(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const multiple = searchParams.get("multiple") as string;
   const snapName = searchParams.get("snapName") as string;
+  const username = searchParams.get("username") as string;
   const result = await fileUploader(
     req,
     multiple === "false" ? false : true,
-    snapName
+    snapName,
+    username
   );
   return await inputFile(req, result as ISnap[]);
 }

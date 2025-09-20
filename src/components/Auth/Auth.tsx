@@ -56,7 +56,7 @@ export default function AuthForm() {
       setLocalStorage("userInfo", { ...data?.result, email });
       dispatch(
         login({
-          name: data?.result?.usrname,
+          name: data?.result?.username,
           email: email,
           isAllowed: data?.result?.isAllowed,
         })

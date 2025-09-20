@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import { FileType, Network } from "../type/site.types";
 
 export interface IUserModel extends Document {
   email: string;
@@ -17,6 +18,16 @@ export interface ISectorModel {
   Azimuth: number;
   PCI: number;
   Antenna_Height?: number;
+}
+
+export interface IFile {
+  filename: string,
+  file_type: FileType,
+  network_type: Network,
+  size: string,
+  destination:string,
+  createdAt?: Date;
+  updatedAt?: Date; 
 }
 
 export interface ITowerModel {
