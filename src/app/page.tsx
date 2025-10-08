@@ -10,7 +10,7 @@ import { SplashScreen } from "../components/Auth/AuthGaurd";
 const FormatsBox = ({
   formats,
   network,
-  file_type,
+  file_type
 }: {
   formats: FileFormat[];
   network: Network;
