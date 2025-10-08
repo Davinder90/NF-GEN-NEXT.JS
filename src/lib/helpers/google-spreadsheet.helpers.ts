@@ -8,7 +8,7 @@ import { createSite, isValidSite } from "@services/site.services";
 import logger from "@/src/log/logger";
 import { env_var } from "@/src/config/env.config";
 
-const credentials = JSON.parse(env_var.GOOGLE_SERVICE_ACCOUNT as string) || {};
+const credentials = env_var.GOOGLE_SERVICE_ACCOUNT ? JSON.parse(env_var.GOOGLE_SERVICE_ACCOUNT as string) || {};
 const serviceAccountAuth = new JWT({
   email: credentials.client_email,
   key: credentials.private_key,
