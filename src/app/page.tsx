@@ -87,9 +87,12 @@ const FormatsBox = ({
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // File card box
 =======
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 const FileBox = ({ file }: { file: FilesFormats }) => {
   return (
     <div
@@ -97,9 +100,12 @@ const FileBox = ({ file }: { file: FilesFormats }) => {
       style={{ "--glow-color": file.color } as React.CSSProperties}
     >
 <<<<<<< HEAD
+<<<<<<< HEAD
       {/* Overlay Content */}
 =======
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
       <div
         className="relative z-10 p-5 bg-white/10 dark:bg-black/30 backdrop-blur-md rounded-md"
@@ -137,17 +143,23 @@ const FileBox = ({ file }: { file: FilesFormats }) => {
 const Home = () => {
   const isAllowed = useSelector((state: RootState) => state.user.isAllowed);
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (!isAllowed) return <SplashScreen />;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-black dark:to-zinc-900 py-12 px-6 transition-colors duration-300">
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   return <>
     {!isAllowed ? <SplashScreen /> : 
 
 (
   <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-black dark:to-zinc-900 py-12 px-6 transition-colors duration-300">
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl sm:text-2xl font-bold mb-12 text-center text-gray-900 dark:text-white font-serif italic tracking-wide transition-all duration-300 hover:scale-105">
           Generate Network Files
@@ -161,12 +173,18 @@ const Home = () => {
       </div>
     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
   );
 =======
   )
 }
   </>
 >>>>>>> 7941f6d (new system)
+=======
+  )
+}
+  </>
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 };
 
 export default Home;

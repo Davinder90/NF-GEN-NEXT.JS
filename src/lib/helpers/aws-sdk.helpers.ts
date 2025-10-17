@@ -1,6 +1,7 @@
 import { env_var } from "@/src/config/env.config";
 import logger from "@/src/log/logger";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   S3Client,
   PutObjectCommand,
@@ -10,6 +11,9 @@ import {
 =======
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 >>>>>>> 7941f6d (new system)
+=======
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 import fs from "fs";
 import path from "path";
 import { PATHS } from "../utils/constants";
@@ -18,6 +22,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { StatusCodes } from "http-status-codes";
 import { asyncRequestHandler, generateResponseObject } from "./common.helpers";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { IResponseObject } from "@interfaces/common.interfaces";
 import { ERROR_MESSAGES } from "@utils/common-constants";
 =======
@@ -25,6 +30,11 @@ import { IResponseObject } from "../interfaces/common.interfaces";
 import { ERROR_MESSAGES } from "../utils/common-constants";
 import { deleteFileFromDB } from "../services/file.services";
 >>>>>>> 7941f6d (new system)
+=======
+import { IResponseObject } from "../interfaces/common.interfaces";
+import { ERROR_MESSAGES } from "../utils/common-constants";
+import { deleteFileFromDB } from "../services/file.services";
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
 const s3 = new S3Client({
   region: env_var.AWS_BUCKET_REGION as string,
@@ -38,16 +48,22 @@ const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
 
 export async function uploadFile(filePath: string) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (!IS_LAMBDA) return;
   logger.info("Inside production 4");
   if (!fs.existsSync(filePath)) {
     return { error: `File not found: ${filePath}`, status: false };
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
     if(!IS_LAMBDA) return;
     logger.info("Inside production 4");
     if (!fs.existsSync(filePath)) {
     return {error: `File not found: ${filePath}`, status: false};
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   }
   const fileContent = fs.readFileSync(filePath);
   const fileName = path.basename(filePath);
@@ -55,15 +71,20 @@ export async function uploadFile(filePath: string) {
   const uploadParams = {
     Bucket: env_var.AWS_BUCKET_NAME,
 <<<<<<< HEAD
+<<<<<<< HEAD
     Key: path.join(PATHS.AWS_OUTPUT_FILES, fileName),
 =======
     Key: path.join(PATHS.AWS_OUTPUT_FILES,fileName),
 >>>>>>> 7941f6d (new system)
+=======
+    Key: path.join(PATHS.AWS_OUTPUT_FILES,fileName),
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
     Body: fileContent,
   };
 
   await s3.send(new PutObjectCommand(uploadParams));
   logger.info(`File uploaded: ${fileName}`);
+<<<<<<< HEAD
 <<<<<<< HEAD
   return { message: `File uploaded: ${fileName}`, status: true };
 }
@@ -85,6 +106,8 @@ export async function deleteFileFromAws(filePath: string) {
       );
     },
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   return {message: `File uploaded: ${fileName}`, status: true}
 }
 
@@ -99,7 +122,10 @@ export async function deleteFileFromAws(filePath: string) {
   }));
   deleteFileFromDB(path.basename(filePath));
   },
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
     ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     StatusCodes.INTERNAL_SERVER_ERROR
   )) as IResponseObject;
@@ -118,6 +144,7 @@ async function streamToBuffer(stream: Readable): Promise<Buffer> {
 
 export async function downloadFileFromAws(req: NextRequest) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (!IS_LAMBDA) return;
   logger.info("Inside production 2");
   const { searchParams } = new URL(req.url);
@@ -125,12 +152,17 @@ export async function downloadFileFromAws(req: NextRequest) {
   const filename = searchParams.get("filename") as string;
   const key = path.join(destination, filename);
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
     logger.info("Inside production 2");
     const { searchParams } = new URL(req.url);
   const destination = searchParams.get("path") as string;   
   const filename = searchParams.get("filename") as string;  
   const key = path.join(destination, filename);           
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
   const result = (await asyncRequestHandler(
     async () => {
@@ -174,6 +206,7 @@ export async function downloadFileFromAws(req: NextRequest) {
   if (result?.error) return generateResponseObject(result);
   return result as NextResponse;
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 export async function establishAwsTemporaryStorage() {
@@ -207,6 +240,8 @@ export async function establishAwsTemporaryStorage() {
   }
 }
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
 }
 
@@ -237,5 +272,9 @@ export async function establishAwsTemporaryStorage() {
             });
         }
     }
+<<<<<<< HEAD
 }
 >>>>>>> 7941f6d (new system)
+=======
+}
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6

@@ -28,6 +28,7 @@ import { CAT_5G } from "./exceljs/5gcat.helpers";
 import { SCFT_ANTS_5G } from "./exceljs/5gscftAnts.helpers";
 import { establishAwsTemporaryStorage, uploadFile } from "./aws-sdk.helpers";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createOrUpdateFile } from "../services/file.services";
 
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
@@ -37,11 +38,16 @@ export const generateFileUniqueName = (
   username: string
 ) => {
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 import { createOrUpdateFile, deleteFileFromDB } from "../services/file.services";
 
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
 export const generateFileUniqueName = (file: File, snap_name: string, username: string) => {
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   return (
     Date.now() +
     "-" +
@@ -56,6 +62,7 @@ export const generateFileUniqueName = (file: File, snap_name: string, username: 
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const deleteFile = async (path: string) => {
   const result = (await asyncRequestHandler(
     async () => {
@@ -63,22 +70,31 @@ export const deleteFile = async (path: string) => {
         return { error: "Path is not defined", status_code: StatusCodes.OK };
       fs.unlinkSync(path);
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 export const deleteFile = async (filepath: string) => {
 
   if (!filepath) return;
   const result = (await asyncRequestHandler(
     async () => {
       fs.unlinkSync(filepath);
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
     },
     ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     StatusCodes.INTERNAL_SERVER_ERROR
   )) as IResponseObject;
   if (result?.error) return generateResponseObject(result);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   deleteFileFromDB(path.basename(filepath));
 >>>>>>> 7941f6d (new system)
+=======
+  deleteFileFromDB(path.basename(filepath));
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   return null;
 };
 
@@ -342,6 +358,7 @@ export const generateReport = async (site_data: ISiteReportData) => {
       }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       const destination = IS_LAMBDA
         ? PATHS.AWS_FORMAT_FILES
         : PATHS.OUTPUT_FILES_PATH;
@@ -358,6 +375,8 @@ export const generateReport = async (site_data: ISiteReportData) => {
       if (IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
 
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
       const destination = IS_LAMBDA ? PATHS.AWS_FORMAT_FILES : PATHS.OUTPUT_FILES_PATH;
       await uploadFile(site_data.output_file_path);
       const filestats = fs.statSync(site_data.output_file_path)
@@ -365,16 +384,23 @@ export const generateReport = async (site_data: ISiteReportData) => {
       await createOrUpdateFile(file_name, file_type, network, `${size}`, destination);
       if(IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
       
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
       return {
         message: "File generated successfully",
         data: {
           filename: file_name,
 <<<<<<< HEAD
+<<<<<<< HEAD
           destination,
 =======
           destination
 >>>>>>> 7941f6d (new system)
+=======
+          destination
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
         },
       };
     },

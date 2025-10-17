@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux-store/store";
 import { login, logout, setAllowance } from "@/src/redux-store/userSlice";
 
+<<<<<<< HEAD
 /* ---------------- Splash Screen ---------------- */
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 export const SplashScreen = () => (
   <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
     <motion.div
@@ -47,7 +50,10 @@ export const SplashScreen = () => (
   </div>
 );
 
+<<<<<<< HEAD
 /* ---------------- Access Denied ---------------- */
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 const AccessDenied = ({
   username,
   email,
@@ -123,7 +129,10 @@ const AccessDenied = ({
   );
 };
 
+<<<<<<< HEAD
 /* ---------------- Client Auth Guard ---------------- */
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
 export default function ClientAuthGuard({
   children,
@@ -146,6 +155,7 @@ export default function ClientAuthGuard({
 
   const handleIsAllowed = useCallback(async () => {
     if (!email) return false;
+<<<<<<< HEAD
     try {
       const { result } = await handleGetUserAllowance(email);
       const allowed = result?.isAllowed || false;
@@ -156,6 +166,12 @@ export default function ClientAuthGuard({
       dispatch(setAllowance({ isAllowed: false }));
       return false;
     }
+=======
+    const { result } = await handleGetUserAllowance(email);
+    const allowed = result?.isAllowed || false;
+    dispatch(setAllowance({ isAllowed: allowed }));
+    return allowed;
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   }, [email, dispatch]);
 
   useEffect(() => {
@@ -170,7 +186,10 @@ export default function ClientAuthGuard({
         return;
       }
 
+<<<<<<< HEAD
       // only call once when token/email changes
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
       const allowed = await handleIsAllowed();
       if (allowed) {
         setState("access");
@@ -180,7 +199,11 @@ export default function ClientAuthGuard({
     };
 
     checkAuth();
+<<<<<<< HEAD
   }, [token, pathname, router, handleIsAllowed]);
+=======
+  }, [token, pathname, router, handleIsAllowed, state]);
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
   if (state === "initial") return <SplashScreen />;
   if (state === "not-access")

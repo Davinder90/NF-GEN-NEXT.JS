@@ -1,5 +1,6 @@
 import FileModel from "@/src/models/file.model";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   asyncRequestHandler,
   generateResponseObject,
@@ -9,13 +10,18 @@ import { ERROR_MESSAGES } from "@utils/common-constants";
 import { StatusCodes } from "http-status-codes";
 import { IResponseObject } from "@interfaces/common.interfaces";
 =======
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 import { asyncRequestHandler, generateResponseObject } from "../helpers/common.helpers";
 import { CustomFileType } from "../type/helpers.types";
 import { ERROR_MESSAGES } from "../utils/common-constants";
 import { StatusCodes } from "http-status-codes";
 import { IResponseObject } from "../interfaces/common.interfaces";
 
+<<<<<<< HEAD
 >>>>>>> 7941f6d (new system)
+=======
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
 
 export const createOrUpdateFile = async (
   filename: string,
@@ -26,6 +32,7 @@ export const createOrUpdateFile = async (
 ) => {
   await FileModel.findOneAndUpdate(
 <<<<<<< HEAD
+<<<<<<< HEAD
     { filename },
     { destination, size, file_type, network_type, updatedAt: new Date() },
     { new: true, upsert: true }
@@ -34,16 +41,26 @@ export const createOrUpdateFile = async (
     { destination ,size, file_type, network_type, updatedAt: new Date() },
     { new: true, upsert: true } 
 >>>>>>> 7941f6d (new system)
+=======
+    { filename }, 
+    { destination ,size, file_type, network_type, updatedAt: new Date() },
+    { new: true, upsert: true } 
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   );
   return;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export const deleteFile = async (filename: string) => {
 =======
 
 export const deleteFileFromDB = async (filename: string) => {
 >>>>>>> 7941f6d (new system)
+=======
+
+export const deleteFileFromDB = async (filename: string) => {
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
   await FileModel.findOneAndDelete({ filename });
   return;
 };
@@ -75,10 +92,14 @@ export const getFilesFromDB = async () => {
           modifiedAt: indiaTime(file.updatedAt ?? new Date()),
           destination: file.destination,
 <<<<<<< HEAD
+<<<<<<< HEAD
           sizeInMB: file.size,
 =======
           sizeInMB : file.size
 >>>>>>> 7941f6d (new system)
+=======
+          sizeInMB : file.size
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
         });
       });
 
@@ -93,7 +114,11 @@ export const getFilesFromDB = async () => {
 
   return generateResponseObject(result);
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
 =======
 };
 >>>>>>> 7941f6d (new system)
+=======
+};
+>>>>>>> 7941f6de5d51dc4ba67682c4242621936e2b5fe6
