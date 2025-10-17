@@ -86,14 +86,20 @@ const FormatsBox = ({
   );
 };
 
+<<<<<<< HEAD
 // File card box
+=======
+>>>>>>> 7941f6d (new system)
 const FileBox = ({ file }: { file: FilesFormats }) => {
   return (
     <div
       className="file-glow rounded-md shadow-2xl"
       style={{ "--glow-color": file.color } as React.CSSProperties}
     >
+<<<<<<< HEAD
       {/* Overlay Content */}
+=======
+>>>>>>> 7941f6d (new system)
 
       <div
         className="relative z-10 p-5 bg-white/10 dark:bg-black/30 backdrop-blur-md rounded-md"
@@ -130,10 +136,18 @@ const FileBox = ({ file }: { file: FilesFormats }) => {
 
 const Home = () => {
   const isAllowed = useSelector((state: RootState) => state.user.isAllowed);
+<<<<<<< HEAD
   if (!isAllowed) return <SplashScreen />;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-black dark:to-zinc-900 py-12 px-6 transition-colors duration-300">
+=======
+  return <>
+    {!isAllowed ? <SplashScreen /> : 
+
+(
+  <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-black dark:to-zinc-900 py-12 px-6 transition-colors duration-300">
+>>>>>>> 7941f6d (new system)
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl sm:text-2xl font-bold mb-12 text-center text-gray-900 dark:text-white font-serif italic tracking-wide transition-all duration-300 hover:scale-105">
           Generate Network Files
@@ -146,7 +160,13 @@ const Home = () => {
         </div>
       </div>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+}
+  </>
+>>>>>>> 7941f6d (new system)
 };
 
 export default Home;

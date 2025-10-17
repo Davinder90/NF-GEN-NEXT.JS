@@ -27,6 +27,7 @@ import { mimeTypeMap } from "@type/helpers.types";
 import { CAT_5G } from "./exceljs/5gcat.helpers";
 import { SCFT_ANTS_5G } from "./exceljs/5gscftAnts.helpers";
 import { establishAwsTemporaryStorage, uploadFile } from "./aws-sdk.helpers";
+<<<<<<< HEAD
 import { createOrUpdateFile } from "../services/file.services";
 
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
@@ -35,6 +36,12 @@ export const generateFileUniqueName = (
   snap_name: string,
   username: string
 ) => {
+=======
+import { createOrUpdateFile, deleteFileFromDB } from "../services/file.services";
+
+const IS_LAMBDA = process.env.AWS_EXECUTION_ENV;
+export const generateFileUniqueName = (file: File, snap_name: string, username: string) => {
+>>>>>>> 7941f6d (new system)
   return (
     Date.now() +
     "-" +
@@ -48,17 +55,30 @@ export const generateFileUniqueName = (
   );
 };
 
+<<<<<<< HEAD
 export const deleteFile = async (path: string) => {
   const result = (await asyncRequestHandler(
     async () => {
       if (!path)
         return { error: "Path is not defined", status_code: StatusCodes.OK };
       fs.unlinkSync(path);
+=======
+export const deleteFile = async (filepath: string) => {
+
+  if (!filepath) return;
+  const result = (await asyncRequestHandler(
+    async () => {
+      fs.unlinkSync(filepath);
+>>>>>>> 7941f6d (new system)
     },
     ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
     StatusCodes.INTERNAL_SERVER_ERROR
   )) as IResponseObject;
   if (result?.error) return generateResponseObject(result);
+<<<<<<< HEAD
+=======
+  deleteFileFromDB(path.basename(filepath));
+>>>>>>> 7941f6d (new system)
   return null;
 };
 
@@ -321,6 +341,7 @@ export const generateReport = async (site_data: ISiteReportData) => {
         }
       }
 
+<<<<<<< HEAD
       const destination = IS_LAMBDA
         ? PATHS.AWS_FORMAT_FILES
         : PATHS.OUTPUT_FILES_PATH;
@@ -336,11 +357,24 @@ export const generateReport = async (site_data: ISiteReportData) => {
       );
       if (IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
 
+=======
+      const destination = IS_LAMBDA ? PATHS.AWS_FORMAT_FILES : PATHS.OUTPUT_FILES_PATH;
+      await uploadFile(site_data.output_file_path);
+      const filestats = fs.statSync(site_data.output_file_path)
+      const size = filestats.size / (1024 * 1024);
+      await createOrUpdateFile(file_name, file_type, network, `${size}`, destination);
+      if(IS_LAMBDA) fs.unlinkSync(site_data.output_file_path);
+      
+>>>>>>> 7941f6d (new system)
       return {
         message: "File generated successfully",
         data: {
           filename: file_name,
+<<<<<<< HEAD
           destination,
+=======
+          destination
+>>>>>>> 7941f6d (new system)
         },
       };
     },

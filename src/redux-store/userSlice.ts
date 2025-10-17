@@ -23,17 +23,26 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.isAllowed = action.payload.isAllowed;
+<<<<<<< HEAD
       return state;
+=======
+>>>>>>> 7941f6d (new system)
     },
     logout: (state) => {
       state.name = null;
       state.email = null;
       state.isAllowed = false;
+<<<<<<< HEAD
       return state;
     },
     setAllowance: (state, action: PayloadAction<{ isAllowed: boolean }>) => {
       state.isAllowed = action.payload.isAllowed;
       return state;
+=======
+    },
+    setAllowance: (state, action: PayloadAction<{ isAllowed: boolean }>) => {
+      state.isAllowed = action.payload.isAllowed;
+>>>>>>> 7941f6d (new system)
     },
   },
 });
