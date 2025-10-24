@@ -3,6 +3,7 @@
 import { getLocalStorage } from "@/src/lib/helpers/localStorage";
 import { handleVerifyAdmin } from "@/src/requests/admin.requests";
 import {
+  handleDeleteUserfromDB,
   handleGetUsers,
   handleUpdateUserAllowance,
 } from "@/src/requests/user.requests";
@@ -14,6 +15,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { BsTrash } from "react-icons/bs";
 
 interface User {
   name: string;
@@ -48,8 +50,32 @@ const UserCard = ({
     }
   };
 
+  const handleDeleteUser = async () => {
+    const { success } = await handleDeleteUserfromDB(
+      auth_email,
+      user.email,
+      !user.isAllowed
+    );
+    if (success) {
+      setUsers((prev: User[]) => prev.filter((U, i) => i != index));
+    }
+  };
+
   return (
-    <div className="p-4 border rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900 mb-4">
+    <div className="relative p-4 border rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900 mb-4">
+      {/* Delete button at top-right */}
+      <>
+        {user.isAllowed ? null : (
+          <button
+            onClick={() => handleDeleteUser()}
+            className="absolute top-2 right-2 flex items-center justify-center p-2 text-red-600 rounded-full transition-colors duration-200"
+          >
+            <BsTrash className="w-5 h-5" />
+          </button>
+        )}
+      </>
+
+      {/* User details */}
       <p className="text-gray-700 dark:text-gray-300">
         <strong>Name:</strong> {user.name}
       </p>

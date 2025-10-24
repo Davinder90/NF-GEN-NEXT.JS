@@ -23,7 +23,7 @@ import {
   workbookIntializer,
 } from "./main.exceljs.helpers";
 import logger from "@/src/log/logger";
-import { PATHS, PLOTS_FORMAT } from "@utils/constants";
+import { COLORS, PATHS, PLOTS_FORMAT } from "@utils/constants";
 import imageSize from "image-size";
 
 export class FORMATER {
@@ -236,6 +236,13 @@ export class FORMATER {
         return a.range.tl.col - b.range.tl.col;
       });
       let counter = 0;
+      if (!operationOn)
+        logger.info(`${COLORS.YELLOW}PLOTS EXTRACTION${COLORS.RESET}`);
+      if (operation == "EVEN")
+        logger.info(`${COLORS.YELLOW}PRE PLOTS EXTRACTION${COLORS.RESET}`);
+      if (operation == "ODD")
+        logger.info(`${COLORS.YELLOW}POST PLOTS EXTRACTION${COLORS.RESET}`);
+
       images.forEach((img) => {
         const image = media[parseInt(img.imageId)];
         const image_name = this.getImageName(
@@ -245,7 +252,6 @@ export class FORMATER {
         );
         const dimensions = imageSize(Buffer.from(image.buffer));
         const isvalid = dimensions.width <= 15 ? false : true;
-        // console.log(names[counter], dimensions);
         // operation off
         if (isvalid && !operationOn) {
           if (names[counter] != "IGNORE") {
@@ -254,6 +260,9 @@ export class FORMATER {
               Buffer.from(image?.buffer)
             );
             hash[names[counter]] = image_name;
+            logger.info(
+              `${COLORS.GREEN}${names[counter]} -> ${image_name}, {width: ${dimensions.width}, height: ${dimensions.height}}, ${isvalid}${COLORS.RESET}`
+            );
           }
           counter++;
         }
@@ -266,7 +275,7 @@ export class FORMATER {
             pre_pci_legend == false &&
             names[counter] == "POST_PCI"
           ) {
-            if (dimensions.width < 210) {
+            if (dimensions.width < 270) {
               const name = this.getImageName(
                 site_data,
                 "PRE_PCI_LEGEND",
@@ -277,6 +286,9 @@ export class FORMATER {
                 path.join(storage_path, name),
                 Buffer.from(image?.buffer)
               );
+              logger.info(
+                `${COLORS.GREEN}PRE_PCI_LEGEND -> ${name}, {width: ${dimensions.width}, height: ${dimensions.height}}, ${isvalid}${COLORS.RESET}`
+              );
               pre_pci_legend = true;
             }
           } else if (
@@ -285,7 +297,7 @@ export class FORMATER {
             post_pci_legend == false &&
             names[counter] == "PRE_RSRP"
           ) {
-            if (dimensions.width < 210) {
+            if (dimensions.width < 270) {
               const name = this.getImageName(
                 site_data,
                 "POST_PCI_LEGEND",
@@ -296,10 +308,13 @@ export class FORMATER {
                 path.join(storage_path, name),
                 Buffer.from(image?.buffer)
               );
+              logger.info(
+                `${COLORS.GREEN}POST_PCI_LEGEND -> ${name}, {width: ${dimensions.width}, height: ${dimensions.height}}, ${isvalid}${COLORS.RESET}`
+              );
               post_pci_legend = true;
             }
           } else if (
-            dimensions.width > 300 &&
+            dimensions.width > 400 &&
             ((operation === "EVEN" && curr_op === "EVEN") ||
               (operation === "ODD" && curr_op === "ODD"))
           ) {
@@ -308,8 +323,11 @@ export class FORMATER {
               Buffer.from(image?.buffer)
             );
             hash[names[counter]] = image_name;
+            logger.info(
+              `${COLORS.GREEN}${names[counter]} -> ${image_name}, {width: ${dimensions.width}, height: ${dimensions.height}}, ${isvalid}${COLORS.RESET}`
+            );
             counter++;
-          } else if (dimensions.width > 300) {
+          } else if (dimensions.width > 400) {
             counter++;
           }
         }
@@ -466,6 +484,7 @@ export class FORMATER {
   ) => {
     asyncHandler(async () => {
       if (!image_path || !image_name) return;
+      logger.info(`${COLORS.GREEN} ${image_name}${COLORS.RESET}`);
       const imageId = workbook.addImage({
         filename: image_path,
         extension: path.extname(image_name).slice(1) as "png" | "jpeg",
@@ -505,6 +524,12 @@ export class FORMATER {
     const len = file_type.toUpperCase() == "SCFT" ? 9 : plots_format.length;
     const end = end_row;
     let index = 0;
+    if (!operationOn)
+      logger.info(`${COLORS.YELLOW}PLOTS INSERTION${COLORS.RESET}`);
+    if (operation == "EVEN")
+      logger.info(`${COLORS.YELLOW}PRE PLOTS INSERTION${COLORS.RESET}`);
+    if (operation == "ODD")
+      logger.info(`${COLORS.YELLOW}POST PLOTS INSERTION${COLORS.RESET}`);
     while (index < len) {
       end_row = end * (index + 1) - index;
       if (!operationOn) {
@@ -560,7 +585,7 @@ export class FORMATER {
       this.insertImage(
         workbook,
         worksheet,
-        path.join(storage_path, hash["ROUTE"]),
+        path.join(storage_path, hash["ROUTE"] || ""),
         hash["ROUTE"],
         4,
         41,
@@ -569,7 +594,7 @@ export class FORMATER {
       );
       inserted_plots.push({
         filename: "",
-        destination: path.join(storage_path, hash["ROUTE"]),
+        destination: path.join(storage_path, hash["ROUTE"] || ""),
       });
     }
 
@@ -583,7 +608,7 @@ export class FORMATER {
       this.insertImage(
         workbook,
         worksheet,
-        path.join(storage_path, hash[name]),
+        path.join(storage_path, hash[name] || ""),
         hash[name],
         131,
         135,
@@ -592,7 +617,7 @@ export class FORMATER {
       );
       inserted_plots.push({
         filename: "",
-        destination: path.join(storage_path, hash[name]),
+        destination: path.join(storage_path, hash[name] || ""),
       });
     }
     await workbook.xlsx.writeFile(file_path);

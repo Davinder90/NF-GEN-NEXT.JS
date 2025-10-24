@@ -189,6 +189,34 @@ export const updateUserAllowance = async (
   return generateResponseObject(result);
 };
 
+export const deleteUser = async (auth_email: string, email: string) => {
+  await dbConnection();
+  const result = (await asyncRequestHandler(
+    async () => {
+      const isAdmin = await Admin.findOne({ email: auth_email });
+      if (!isAdmin)
+        return {
+          error: "You are not admin",
+          status_code: StatusCodes.OK,
+        };
+      const user = await User.findOneAndDelete({ email });
+      if (!user)
+        return {
+          error: "User deleted successfully",
+          status_code: StatusCodes.OK,
+        };
+
+      return {
+        message: `User allowance updated successfully`,
+        data: { user },
+      };
+    },
+    "Internal Server Error, please try again later",
+    StatusCodes.INTERNAL_SERVER_ERROR
+  )) as IResponseObject;
+  return generateResponseObject(result);
+};
+
 export const getUserAllowance = async (email: string) => {
   await dbConnection();
   const result = (await asyncRequestHandler(

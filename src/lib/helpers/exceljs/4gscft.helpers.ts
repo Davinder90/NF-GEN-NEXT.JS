@@ -7,7 +7,7 @@ import {
   ISnap,
 } from "@interfaces/site.interfaces";
 import { getWorksheet } from "@helpers/exceljs/main.exceljs.helpers";
-import { _4G_SNAPS_FORMAT, STATES_PARAMS } from "@utils/constants";
+import { _4G_SNAPS_FORMAT, COLORS, STATES_PARAMS } from "@utils/constants";
 import { IOptions } from "@interfaces/file.interfaces";
 import { SectorComponentsKey, TowerBuildingSnapKey } from "@type/site.types";
 import logger from "@/src/log/logger";
@@ -418,7 +418,7 @@ export class SCFT_4G extends FORMATER {
 
   generate4GOldScftReport = async () => {
     for (const sheet of this.output_workbook.worksheets) {
-      logger.info(`4G SCFT ${sheet.name}`);
+      logger.info(`${COLORS.BLUE}4G SCFT ${sheet.name}${COLORS.RESET}`);
       switch (sheet.name.toUpperCase()) {
         case "LTE KPI":
           await this.LteKpi(sheet.name, sheet);

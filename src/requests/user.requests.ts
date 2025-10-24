@@ -55,6 +55,22 @@ export const handleUpdateUserAllowance = async (
     : { success: false, message: result.statusText };
 };
 
+export const handleDeleteUserfromDB = async (
+  auth_email: string,
+  email: string,
+  isAllowed: boolean
+) => {
+  const result = (await asyncResponseHandler(async () => {
+    return await axiosInstance.post(
+      API_ROUTES.USER_ROUTE + API_ROUTES.DELETE_USER,
+      { auth_email, email, isAllowed }
+    );
+  })) as AxiosResponse;
+  return result?.data
+    ? result.data
+    : { success: false, message: result.statusText };
+};
+
 export const handleGetUserAllowance = async (email: string) => {
   const result = (await asyncResponseHandler(async () => {
     return await axiosInstance.post(

@@ -11,6 +11,17 @@ import { ITowerModel } from "@interfaces/models.interfaces";
 
 // paths constants
 // Detect if running in AWS Lambda
+export const COLORS = {
+  RESET: "\x1b[0m",
+  RED: "\x1b[31m",
+  GREEN: "\x1b[32m",
+  YELLOW: "\x1b[33m",
+  BLUE: "\x1b[34m",
+  MAGENTA: "\x1b[35m",
+  CYAN: "\x1b[36m",
+  WHITE: "\x1b[37m",
+};
+
 const IS_LAMBDA = process.env.AWS_EXECUTION_ENV !== undefined;
 
 // base directory

@@ -3,6 +3,7 @@ import { FORMATER } from "@helpers/exceljs/format.exceljs.helpers";
 import { getWorksheet } from "./main.exceljs.helpers";
 import { ICells, ISiteReportData } from "@interfaces/site.interfaces";
 import logger from "@/src/log/logger";
+import { COLORS } from "../../utils/constants";
 
 export class CAT_4G extends FORMATER {
   site_data: ISiteReportData;
@@ -139,7 +140,7 @@ export class CAT_4G extends FORMATER {
 
   generate4GCatReport = async () => {
     for (const sheet of this.output_workbook.worksheets) {
-      logger.info(`4G CAT ${sheet.name}`);
+      logger.info(`${COLORS.BLUE}4G CAT ${sheet.name}${COLORS.RESET}`);
       switch (sheet.name.toUpperCase()) {
         case "CLUSTER AT":
           await this.clusterAt(sheet, "Cluster AT");

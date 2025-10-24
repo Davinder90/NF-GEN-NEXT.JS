@@ -7,6 +7,7 @@ import {
   ISnap,
 } from "@interfaces/site.interfaces";
 import { SectorComponentsKey } from "@type/site.types";
+import { COLORS } from "../../utils/constants";
 
 export class SCFT_ANTS_5G extends FORMATER {
   site_data: ISiteReportData;
@@ -122,7 +123,7 @@ export class SCFT_ANTS_5G extends FORMATER {
 
   generate5GSCFT_ANTSReport = async () => {
     for (const sheet of this.output_workbook.worksheets) {
-      logger.info(`5G CAT ${sheet.name}`);
+      logger.info(`${COLORS.BLUE}5G CAT ${sheet.name}${COLORS.RESET}`);
       switch (sheet.name.toUpperCase()) {
         case "PERF SNAP":
           this.perfSnap(sheet);

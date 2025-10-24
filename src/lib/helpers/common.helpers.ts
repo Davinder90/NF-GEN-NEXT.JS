@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import logger from "@log/logger";
 import { NextResponse } from "next/server";
 import { Network } from "../type/site.types";
+import { COLORS } from "../utils/constants";
 
 const generateResponse = (
   status_code: number,
@@ -47,7 +48,7 @@ export const asyncRequestHandler = async <T>(
   try {
     return await fn();
   } catch (error) {
-    logger.error(errorMessage, error);
+    logger.error(`${COLORS.RED}${errorMessage}, ${error}${COLORS.RESET}`);
     return {
       error: errorMessage,
       status_code,
@@ -59,7 +60,7 @@ export const asyncHandler = async <T>(fn: () => Promise<T>) => {
   try {
     await fn();
   } catch (error) {
-    logger.error(error);
+    logger.error(`${COLORS.RED}${error}${COLORS.RESET}`);
   }
 };
 

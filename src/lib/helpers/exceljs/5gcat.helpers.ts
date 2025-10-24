@@ -8,7 +8,7 @@ import {
   ISiteReportData,
 } from "@interfaces/site.interfaces";
 import logger from "@/src/log/logger";
-import { PLOTS_FORMAT } from "@utils/constants";
+import { COLORS, PLOTS_FORMAT } from "@utils/constants";
 import { IOptions } from "../../interfaces/file.interfaces";
 
 export class CAT_5G extends FORMATER {
@@ -402,7 +402,7 @@ export class CAT_5G extends FORMATER {
 
   generate5GCatReport = async () => {
     for (const sheet of this.output_workbook.worksheets) {
-      logger.info(`5G CAT ${sheet.name}`);
+      logger.info(`${COLORS.BLUE}5G CAT ${sheet.name}${COLORS.RESET}`);
       switch (sheet.name.toUpperCase()) {
         case "CLUSTER AT":
           await this.clusterAt(sheet, sheet.name);

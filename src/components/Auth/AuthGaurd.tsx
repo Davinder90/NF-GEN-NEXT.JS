@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@redux-store/store";
 import { login, logout, setAllowance } from "@/src/redux-store/userSlice";
 
-/* ---------------- Splash Screen ---------------- */
 export const SplashScreen = () => (
   <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
     <motion.div
@@ -47,7 +46,6 @@ export const SplashScreen = () => (
   </div>
 );
 
-/* ---------------- Access Denied ---------------- */
 const AccessDenied = ({
   username,
   email,
@@ -123,8 +121,6 @@ const AccessDenied = ({
   );
 };
 
-/* ---------------- Client Auth Guard ---------------- */
-
 export default function ClientAuthGuard({
   children,
 }: {
@@ -139,10 +135,16 @@ export default function ClientAuthGuard({
   const email = user?.email;
 
   const dispatch = useDispatch<AppDispatch>();
-  dispatch(login({ name: username, email, isAllowed: false }));
+
   const [state, setState] = useState<
     "initial" | "not-access" | "access" | "auth"
   >("initial");
+
+  useEffect(() => {
+    if (username && email) {
+      dispatch(login({ name: username, email, isAllowed: false }));
+    }
+  }, [dispatch, username, email]);
 
   const handleIsAllowed = useCallback(async () => {
     if (!email) return false;
@@ -164,17 +166,12 @@ export default function ClientAuthGuard({
         return;
       }
 
-      // only call once when token/email changes
       const allowed = await handleIsAllowed();
-      if (allowed) {
-        setState("access");
-      } else {
-        setState("not-access");
-      }
+      setState(allowed ? "access" : "not-access");
     };
 
     checkAuth();
-  }, [token, pathname, router, handleIsAllowed, state]);
+  }, [token, pathname, router, handleIsAllowed]);
 
   if (state === "initial") return <SplashScreen />;
   if (state === "not-access")

@@ -26,6 +26,7 @@ export const API_ROUTES = {
   USER_SIGNIN_ROUTE: "/sign-in",
   UPDATE_USER_ALLOWANCE: "/update-allowance",
   GET_USER_ALLOWANCE: "/get-allowance",
+  DELETE_USER: "/delete",
   // admin routes
   ADMIN_ROUTE: "/admin",
   NEW_ADMIN_ROUTE: "/new-admin",

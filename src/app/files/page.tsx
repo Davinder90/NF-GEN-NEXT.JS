@@ -34,7 +34,7 @@ const FileContainer = ({
             {file.filename}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Created: {file.modifiedAt}
+            Created: {file.modifiedAt.split(",")[0]}
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Size: {file?.sizeInMB ? parseInt(file.sizeInMB).toFixed(2) : 0} MB
@@ -83,7 +83,7 @@ const FilesPage = () => {
     setDisable(true);
     const result = await handleDownloadReport(
       files[index].destination,
-      files[index].filename 
+      files[index].filename
     );
     toast.dismiss(loadingToast);
     if (result && result.data) {
