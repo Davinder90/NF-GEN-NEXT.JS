@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@log/*": ["./src/log/*"],
+      "@services/*": ["./src/lib/services/*"],
+      "@config/*": ["./src/config/*"],
+      "@utils/*": ["./src/lib/utils/*"],
+      "@validators/*": ["./src/utils/zodSchema/*"],
+      "@models/*": ["./src/models/*"],
+      "@interfaces/*": ["./src/lib/interfaces/*"],
+      "@helpers/*": ["./src/lib/helpers/*"],
+      "@zodSchema/*": ["./src/lib/zod-schema/*"],
+      "@middleware/*": ["./src/lib/middleware/*"],
+      "@type/*": ["./src/lib/type/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@redux-store/*": ["./src/redux-store/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/sites/import-sites/page.tss"
+  ],
+  "exclude": ["node_modules"]
+}
